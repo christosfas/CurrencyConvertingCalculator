@@ -352,7 +352,7 @@
         android:background="@drawable/button"
         android:text="$/€"
         android:textColor="#060606"
-        android:textSize="28sp"
+        android:textSize="25sp"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
