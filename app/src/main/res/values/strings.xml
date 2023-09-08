@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CurrencyConvertingCalculator</string>
+    <string name="convert_dialog_text">Select base and target currency</string>
+</resources>
