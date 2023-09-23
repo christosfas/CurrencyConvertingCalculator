@@ -1,11 +1,9 @@
 package com.example.currencyconvertingcalculator;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import android.util.Log;
-import java.text.DecimalFormat;
 
 public class Scanner {
     private final String expression;
@@ -19,19 +17,19 @@ public class Scanner {
         StringBuilder value = new StringBuilder();
         List<ScannedToken> scannedExpr = new ArrayList<>();
         for (char c : expression.toCharArray()) {
-            TokenType type = TokenType.fromString(new String(new char[] {c}));
+            TokenType type = TokenType.fromString(String.valueOf(c));
             if (!type.equals(TokenType.VALUE)) {
                 if (value.length() > 0) {
                     //Add the full value TOKEN
                     ScannedToken st = new ScannedToken(value.toString(), TokenType.VALUE);
                     scannedExpr.add(st);
                 }
-                value = new StringBuilder(new String(new char[] {c}));
+                value = new StringBuilder(String.valueOf(c));
                 ScannedToken st = new ScannedToken(value.toString(), type);
                 scannedExpr.add(st);
                 value = new StringBuilder();
             } else {
-                value.append(new String(new char[] {c}));
+                value.append(c);
 
             }
         }
@@ -104,7 +102,6 @@ public class Scanner {
                 }
                 double base = Double.parseDouble(expression.get(idx - 1).expression());
                 double exp = Double.parseDouble(expression.get(idx + 1).expression());
-                DecimalFormat df = new DecimalFormat(".00");
                 double ans = Math.pow(base, exp);
                 for (int i = 0; i < idx - 1; i++) {
                     newExpression.add(expression.get(i));
@@ -124,7 +121,6 @@ public class Scanner {
                         throw new Exception("Percentage operator missing operand");
                     }
                     double left = Double.parseDouble(expression.get(percIdx - 1).expression());
-                    DecimalFormat df = new DecimalFormat(".00");
                     double ans = left * 0.01;
                     for (int i = 0; i < percIdx - 1; i++) {
                         newExpression.add(expression.get(i));
@@ -151,8 +147,7 @@ public class Scanner {
                         }
                         double left = Double.parseDouble(expression.get(computationIdx - 1).expression());
                         double right = Double.parseDouble(expression.get(computationIdx + 1).expression());
-                        DecimalFormat df = new DecimalFormat(".00");
-                        double ans = computationIdx == mulIdx ? left * right : left / right * 1.0;
+                        double ans = computationIdx == mulIdx ? left * right : left / right;
                         for (int i = 0; i < computationIdx - 1; i++) {
                             newExpression.add(expression.get(i));
                         }
@@ -179,8 +174,7 @@ public class Scanner {
                             }
                             double left = Double.parseDouble(expression.get(computationIdx2 - 1).expression());
                             double right = Double.parseDouble(expression.get(computationIdx2 + 1).expression());
-                            DecimalFormat df = new DecimalFormat(".00");
-                            double ans = computationIdx2 == addIdx ? left + right : (left - right) * 1.0;
+                            double ans = computationIdx2 == addIdx ? left + right : (left - right);
                             for (int i = 0; i < computationIdx2 - 1; i++) {
                                 newExpression.add(expression.get(i));
                             }

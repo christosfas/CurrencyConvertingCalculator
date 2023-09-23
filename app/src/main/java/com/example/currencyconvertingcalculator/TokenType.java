@@ -1,5 +1,7 @@
 package com.example.currencyconvertingcalculator;
 
+import androidx.annotation.NonNull;
+
 public enum TokenType {
     ADD,
     SUB,
@@ -11,6 +13,7 @@ public enum TokenType {
     RPAR,
     VALUE;
 
+    @NonNull
     @Override
     public String toString() {
         switch (this.ordinal()){

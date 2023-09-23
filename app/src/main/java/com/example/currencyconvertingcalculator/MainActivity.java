@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import okhttp3.Call;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
     private static final String BASE_URL = "http://data.fixer.io/api"; //free Fixer.io users can't have encryption so http instead of https
     private static final String API_KEY = "?access_key=6df9ecb75171c747c04f56681e0a1924"; //free Fixer.io API key
 
-    private OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient();
 
     private Button b1;
     private Button b2;
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                     Scanner sc = new Scanner(text);
                     List<ScannedToken> scanExp = sc.scan();
                     Parser parser = new Parser(scanExp);
-                    List<ScannedToken> parsed = null;
+                    List<ScannedToken> parsed;
                     parsed = parser.parse();
                     //Log.e("MAIN", String.valueOf(sc.evaluate(parsed)));
                     t2.setText(text);
@@ -280,13 +281,11 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                                 e.printStackTrace();
                             }
                         }
-                    } else {
+                    }else {
                         Toast.makeText(getApplicationContext(), "Cannot convert empty value or invalid symbols!", Toast.LENGTH_LONG).show();
                     }
-                }
-                else{
+                }else{
                     Toast.makeText(getApplicationContext(), "Conversion won't be possible due to lack of internet connection!", Toast.LENGTH_LONG).show();
-                    return;
                 }
             }
         });
@@ -305,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
             }
         });
 
-        // Empty text views on long click.
+
         b_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -374,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                 public void run() {
                     try {
                         HttpUrl.Builder urlBuilder
-                                = HttpUrl.parse(BASE_URL + "/symbols" + API_KEY).newBuilder();
+                                = Objects.requireNonNull(HttpUrl.parse(BASE_URL + "/symbols" + API_KEY)).newBuilder();
 
                         String url = urlBuilder.build().toString();
 
@@ -383,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                                 .build();
                         Call call = client.newCall(request);
                         Response response = call.execute();
-                        responseString[0] = response.body().string();
+                        responseString[0] = Objects.requireNonNull(response.body()).string();
 
                         Log.i("SYMBOLS RESPONSE", String.valueOf(response.code()));
 
@@ -428,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
             public void run() {
                 try {
                     HttpUrl.Builder urlBuilder
-                            = HttpUrl.parse(BASE_URL + "/latest" + API_KEY).newBuilder();
+                            = Objects.requireNonNull(HttpUrl.parse(BASE_URL + "/latest" + API_KEY)).newBuilder();
 
                     String url = urlBuilder.build().toString();
 
@@ -437,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                             .build();
                     Call call = client.newCall(request);
                     Response response = call.execute();
-                    responseString[0] = response.body().string();
+                    responseString[0] = Objects.requireNonNull(response.body()).string();
 
                     Log.i("CONVERSION RESPONSE", String.valueOf(response.code()));
 //                    Log.e("CONVERSION RESPONSE", response.body().string());
@@ -456,6 +455,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                 }
 
                 // Get the "success" value as a boolean
+                assert jsonNode != null;
                 boolean success = jsonNode.get("success").asBoolean();
                 //Get the rates to the default base (EURO) for the conversion
                 double targetCurrencyRate = jsonNode.get("rates").get(to).asDouble();
@@ -500,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
              values[1] = convertCurrency(from, to, values[0]);
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
         t2.setText(from + " " + values[0]);
         t1.setText(to + " " + values[1]);

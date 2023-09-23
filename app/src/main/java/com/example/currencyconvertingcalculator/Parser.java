@@ -18,9 +18,9 @@ public class Parser {
     needs to be parsed into correct tokens
      */
     public List<ScannedToken> parse(){
-        TokenType prev = null;
-        TokenType curr = null;
-        TokenType next = null;
+        TokenType prev;
+        TokenType curr;
+        TokenType next;
 
         List<ScannedToken> properlyParsedExpression = new ArrayList<>();
 

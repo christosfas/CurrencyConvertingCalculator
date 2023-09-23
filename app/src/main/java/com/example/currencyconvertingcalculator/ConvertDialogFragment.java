@@ -15,9 +15,11 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Objects;
+
 public class ConvertDialogFragment extends DialogFragment {
-    private RadioGroup fromListView;
-    private RadioGroup toListView;
+    private RadioGroup fromRecyclerRadioGroup;
+    private RadioGroup toRecyclerRadioGroup;
     private final String TAG = this.getClass().getSimpleName();
     private String from = "";
     private String to = "";
@@ -35,40 +37,41 @@ public class ConvertDialogFragment extends DialogFragment {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
 
-        fromListView = (RadioGroup) v.findViewById(R.id.fromRecycler);
-        toListView = (RadioGroup) v.findViewById(R.id.toRecycler);
+        fromRecyclerRadioGroup = v.findViewById(R.id.fromRecycler);
+        toRecyclerRadioGroup = v.findViewById(R.id.toRecycler);
+        assert getArguments() != null;
         for ( String this_currency_option: getArguments().getStringArray("currencies")) {  //set currency options to listviews
             RadioButton rb = new RadioButton(this.getContext());
             rb.setText(this_currency_option);
-            fromListView.addView(rb);
+            fromRecyclerRadioGroup.addView(rb);
             rb = new RadioButton(this.getContext());
             rb.setText(this_currency_option);
-            toListView.addView(rb);
+            toRecyclerRadioGroup.addView(rb);
         }
 
-        fromListView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  //if both base and target currencies selected send data to Main Activity
+        fromRecyclerRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  //if both base and target currencies selected send data to Main Activity
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton checkedFrom = (RadioButton) v.findViewById(fromListView.getCheckedRadioButtonId());
+                RadioButton checkedFrom = v.findViewById(fromRecyclerRadioGroup.getCheckedRadioButtonId());
                 from = checkedFrom.getText().toString();
                 if(!to.isEmpty()){
 
                     mOnInputListener.sendInput(from, to);
-                    getDialog().dismiss();
+                    Objects.requireNonNull(getDialog()).dismiss();
 
                 }
             }
         });
 
-        toListView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        toRecyclerRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton checkedTo = (RadioButton) v.findViewById(toListView.getCheckedRadioButtonId());
+                RadioButton checkedTo = v.findViewById(toRecyclerRadioGroup.getCheckedRadioButtonId());
                 to = checkedTo.getText().toString();
                 if(!from.isEmpty()){
 
                     mOnInputListener.sendInput(from, to);
-                    getDialog().dismiss();
+                    Objects.requireNonNull(getDialog()).dismiss();
 
                 }
             }
@@ -78,7 +81,7 @@ public class ConvertDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context)  //on Attach get listener from activity
+    public void onAttach(@NonNull Context context)  //on Attach get listener from activity
     {
         super.onAttach(context);
         try {
