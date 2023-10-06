@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Base:"/>
+            android:text="Base:"
+            android:textColor="@color/white"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -52,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Target:"/>
+            android:text="Target:"
+            android:textColor="@color/white"/>
 
         <ScrollView
             android:layout_width="match_parent"

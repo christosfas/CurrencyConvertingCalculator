@@ -3,7 +3,9 @@ package com.example.currencyconvertingcalculator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +45,11 @@ public class ConvertDialogFragment extends DialogFragment {
         for ( String this_currency_option: getArguments().getStringArray("currencies")) {  //set currency options to listviews
             RadioButton rb = new RadioButton(this.getContext());
             rb.setText(this_currency_option);
+            rb.setTextColor(getResources().getColor(R.color.white));
             fromRecyclerRadioGroup.addView(rb);
             rb = new RadioButton(this.getContext());
             rb.setText(this_currency_option);
+            rb.setTextColor(getResources().getColor(R.color.white));
             toRecyclerRadioGroup.addView(rb);
         }
 
