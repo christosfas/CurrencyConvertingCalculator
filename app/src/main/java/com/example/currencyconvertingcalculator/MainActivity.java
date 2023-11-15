@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements ConvertDialogFrag
                             dialog.show(getSupportFragmentManager(), "Dialog");
                         }else{
                             //currencies map may be null if there was no internet connection during onCreate
-                            Toast.makeText(getApplicationContext(), "No currencies available reconnecting with server...\n Try again later", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "No currencies available. Reconnecting with server...\n Try again later", Toast.LENGTH_LONG).show();
 
                             try {       //try getting the supported currencies now
                                 getSymbols();
